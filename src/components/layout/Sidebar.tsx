@@ -56,6 +56,7 @@ export const Sidebar = () => {
               className={cn(
                 "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
                 "hover:bg-accent hover:text-accent-foreground",
+                collapsed && "justify-center px-2",
                 isActive
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground"
