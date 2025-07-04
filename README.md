@@ -1,5 +1,6 @@
 Ejada gamification Mock- Gamification Platform
 
+
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Architecture](#architecture)
@@ -29,7 +30,7 @@ Ejada gamification Mock is a comprehensive gamification platform that enables or
 The platform follows a modern full-stack architecture with clear separation of concerns:
 
 ```
-badge-blaze-nexus/
+Ejada Gamification Mock/
 ├── backend/                 # Spring Boot REST API
 │   ├── src/main/java/
 │   │   └── com/example/backend/
