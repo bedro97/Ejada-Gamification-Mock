@@ -14,6 +14,10 @@ public class Badge {
     @Column(name = "image_url")
     private String imageUrl;
     private String criteria;
+    private String type;
+    private Integer points;
+    private String icon;
+    private Boolean active;
     @Column(name = "tenant_id")
     private String tenantId;
 
@@ -28,6 +32,14 @@ public class Badge {
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public String getCriteria() { return criteria; }
     public void setCriteria(String criteria) { this.criteria = criteria; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    public Integer getPoints() { return points; }
+    public void setPoints(Integer points) { this.points = points; }
+    public String getIcon() { return icon; }
+    public void setIcon(String icon) { this.icon = icon; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
     public String getTenantId() { return tenantId; }
     public void setTenantId(String tenantId) { this.tenantId = tenantId; }
 } 

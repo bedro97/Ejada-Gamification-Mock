@@ -10,7 +10,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Badges = () => {
   const fetchBadges = async () => {
-    const res = await fetch(`${process.env.VITE_API_URL}/badges`);
+    const res = await fetch(`http://localhost:8080/api/badges`);
     return res.json();
   };
 
@@ -23,7 +23,7 @@ const Badges = () => {
   const createBadge = useMutation({
     mutationFn: async (badge) => {
       console.log('Creating badge:', badge);
-      const res = await fetch(`${process.env.VITE_API_URL}/badges`, {
+      const res = await fetch(`http://localhost:8080/api/badges`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(badge),
@@ -37,6 +37,26 @@ const Badges = () => {
     },
     onError: (error) => {
       console.error('Error creating badge:', error);
+    },
+  });
+
+  const updateBadge = useMutation({
+    mutationFn: async (data: { id: number; badge: any }) => {
+      console.log('Updating badge:', data.id, data.badge);
+      const res = await fetch(`http://localhost:8080/api/badges/${data.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data.badge),
+      });
+      console.log('Response:', res);
+      return res.json();
+    },
+    onSuccess: () => {
+      console.log('Badge updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['badges'] });
+    },
+    onError: (error) => {
+      console.error('Error updating badge:', error);
     },
   });
   const [searchTerm, setSearchTerm] = useState("");
@@ -97,7 +117,13 @@ const Badges = () => {
           }}
           onSave={(badgeData) => {
             console.log('onSave called with:', badgeData);
-            createBadge.mutate(badgeData);
+            if (selectedBadge) {
+              // Update existing badge
+              updateBadge.mutate({ id: selectedBadge.id, badge: badgeData });
+            } else {
+              // Create new badge
+              createBadge.mutate(badgeData);
+            }
             setIsFormOpen(false);
             setSelectedBadge(null);
           }}

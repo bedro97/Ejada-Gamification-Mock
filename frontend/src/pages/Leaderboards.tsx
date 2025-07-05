@@ -8,7 +8,7 @@ import { LeaderboardFilters } from "@/components/leaderboards/LeaderboardFilters
 import { useQuery } from '@tanstack/react-query';
 
 const fetchLeaderboard = async (period: string) => {
-  const res = await fetch(`${process.env.VITE_API_URL}/leaderboard?period=${period}`);
+  const res = await fetch(`http://localhost:8080/api/leaderboard?period=${period}`);
   return res.json();
 };
 

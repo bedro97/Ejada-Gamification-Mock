@@ -7,12 +7,14 @@ interface BadgeData {
   id: number;
   name: string;
   description: string;
-  type: string;
+  type?: string;
   criteria: string;
-  points: number;
-  awarded: number;
-  icon: string;
-  active: boolean;
+  points?: number;
+  awarded?: number;
+  icon?: string;
+  active?: boolean;
+  imageUrl?: string;
+  tenantId?: string;
 }
 
 interface BadgeCardProps {
@@ -21,7 +23,7 @@ interface BadgeCardProps {
 }
 
 export const BadgeCard = ({ badge, onEdit }: BadgeCardProps) => {
-  const getTypeColor = (type: string) => {
+  const getTypeColor = (type?: string) => {
     switch (type) {
       case "bronze": return "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200";
       case "silver": return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
@@ -36,11 +38,11 @@ export const BadgeCard = ({ badge, onEdit }: BadgeCardProps) => {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">{badge.icon}</span>
+            <span className="text-2xl">{badge.icon || "🏆"}</span>
             <div>
               <CardTitle className="text-lg">{badge.name}</CardTitle>
               <Badge className={getTypeColor(badge.type)} variant="secondary">
-                {badge.type}
+                {badge.type || "bronze"}
               </Badge>
             </div>
           </div>
@@ -75,15 +77,15 @@ export const BadgeCard = ({ badge, onEdit }: BadgeCardProps) => {
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Points:</span>
-            <span className="font-medium">{badge.points}</span>
+            <span className="font-medium">{badge.points || 0}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Awarded:</span>
-            <span className="font-medium">{badge.awarded} times</span>
+            <span className="font-medium">{badge.awarded || 0} times</span>
           </div>
         </div>
 
-        {!badge.active && (
+        {badge.active === false && (
           <Badge variant="outline" className="mt-3">
             Inactive
           </Badge>

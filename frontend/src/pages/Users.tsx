@@ -16,7 +16,7 @@ const Users = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const fetchUsers = async () => {
-    const res = await fetch(`${process.env.VITE_API_URL}/users`);
+    const res = await fetch(`http://localhost:8080/api/users`);
     return res.json();
   };
 
@@ -33,7 +33,7 @@ const Users = () => {
   const queryClient = useQueryClient();
   const createUser = useMutation({
     mutationFn: async (user) => {
-      const res = await fetch(`${process.env.VITE_API_URL}/users`, {
+      const res = await fetch(`http://localhost:8080/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),

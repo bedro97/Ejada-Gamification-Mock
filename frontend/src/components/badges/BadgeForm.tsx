@@ -22,6 +22,8 @@ export const BadgeForm = ({ badge, onClose, onSave }: BadgeFormProps) => {
     points: badge?.points || 10,
     icon: badge?.icon || "🏆",
     active: badge?.active ?? true,
+    imageUrl: badge?.imageUrl || "",
+    tenantId: badge?.tenantId || null,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
