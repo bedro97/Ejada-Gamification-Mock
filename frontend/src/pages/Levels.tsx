@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const fetchLevels = async () => {
-  const res = await fetch('/api/levels');
+  const res = await fetch(`${process.env.VITE_API_URL}/levels`);
   return res.json();
 };
 

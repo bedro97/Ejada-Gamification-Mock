@@ -1,4 +1,4 @@
-Ejada gamification Mock- Gamification Platform
+# Ejada gamification Mock- Gamification Platform
 
 
 ## Table of Contents
@@ -87,7 +87,10 @@ Ejada Gamification Mock/
 ### Quick Start with Docker
 
 1. **Clone the repository**
-   
+   ```bash
+   git clone <repository-url>
+   cd badge-blaze-nexus
+   ```
 
 2. **Start the entire stack**
    ```bash
@@ -95,7 +98,7 @@ Ejada Gamification Mock/
    ```
 
 3. **Access the application**
-   - Frontend: http://localhost:5173
+   - Frontend: http://localhost:8081 (Vite dev server) or http://localhost:3000 (Dockerized Nginx)
    - Backend API: http://localhost:8080
    - Database: localhost:5432
 
@@ -110,9 +113,10 @@ Ejada Gamification Mock/
 
 2. **Configure database** (edit `src/main/resources/application.properties`)
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/badge_blaze_nexus
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
+   spring.datasource.url=jdbc:postgresql://localhost:5432/gamification
+   spring.datasource.username=postgres
+   spring.datasource.password=123456
+   # For Docker Compose, these are set via environment variables
    ```
 
 3. **Run the application**
@@ -144,6 +148,12 @@ Ejada Gamification Mock/
    # or
    bun dev
    ```
+   - The frontend will be available at http://localhost:8081
+
+### CORS Configuration
+- The backend is configured to allow requests from the frontend (http://localhost:8081) using Spring Security and WebMvcConfigurer.
+- If you change the frontend port, update the allowed origin in `SecurityConfig.java`.
+- For development, CORS is set to allow credentials and all methods/headers from the frontend origin.
 
 ## API Documentation
 
@@ -305,7 +315,7 @@ Currently, the API operates without authentication for development purposes. In 
 backend/src/main/java/com/example/backend/
 ├── BackendApplication.java          # Main application class
 ├── config/
-│   └── SecurityConfig.java          # Security configuration
+│   └── SecurityConfig.java          # Security configuration (CORS, etc.)
 ├── controller/                      # REST controllers
 │   ├── UserController.java
 │   ├── BadgeController.java
@@ -371,7 +381,10 @@ frontend/src/
    ```bash
    cd frontend
    npm run dev
+   # or
+   bun dev
    ```
+   - The frontend will be available at http://localhost:8081
 
 3. **Database Changes**
    - Update entities in `backend/src/main/java/com/example/backend/entity/`
@@ -437,6 +450,11 @@ frontend/src/
    kill -9 <process-id>
    ```
 
+4. **CORS Issues**
+   - If you see errors like `No 'Access-Control-Allow-Origin' header is present`, ensure your backend CORS config in `SecurityConfig.java` includes the correct frontend origin (e.g., `http://localhost:8081`).
+   - If using credentials, do **not** use `*` for allowed origins—set the exact origin.
+   - Restart the backend after changing CORS settings.
+
 #### Frontend Issues
 
 1. **Dependency Issues**
@@ -459,6 +477,7 @@ frontend/src/
    - Verify backend is running on port 8080
    - Check CORS configuration
    - Verify API endpoints are correct
+   - If using Vite dev server, ensure it is running on the expected port (default: 8081)
 
 ### Performance Optimization
 
@@ -510,4 +529,4 @@ For support and questions:
 
 ---
 
-**Badge Blaze Nexus** - Empowering engagement through gamification 
+**Ejada gamification Mock** - Empowering engagement through gamification 

@@ -13,28 +13,28 @@ const fetchBadges = async () => {
   return res.json();
 };
 
+const { data: badges = [], isLoading } = useQuery({
+  queryKey: ['badges'],
+  queryFn: fetchBadges,
+});
+
+const queryClient = useQueryClient();
+const createBadge = useMutation({
+  mutationFn: async (badge) => {
+    const res = await fetch(`${process.env.VITE_API_URL}/badges`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(badge),
+    });
+    return res.json();
+  },
+  onSuccess: () => queryClient.invalidateQueries({ queryKey: ['badges'] }),
+});
+
 const Badges = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedBadge, setSelectedBadge] = useState(null);
-
-  const { data: badges = [], isLoading } = useQuery({
-    queryKey: ['badges'],
-    queryFn: fetchBadges,
-  });
-
-  const queryClient = useQueryClient();
-  const createBadge = useMutation({
-    mutationFn: async (badge) => {
-      const res = await fetch(`${process.env.VITE_API_URL}/badges`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(badge),
-      });
-      return res.json();
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['badges'] }),
-  });
 
   const filteredBadges = badges.filter(badge =>
     badge.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
