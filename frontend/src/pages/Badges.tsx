@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,15 +8,11 @@ import { BadgeForm } from "@/components/badges/BadgeForm";
 import { BadgeCard } from "@/components/badges/BadgeCard";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const fetchBadges = async () => {
-  const res = await fetch(`${process.env.VITE_API_URL}/badges`);
-  return res.json();
-};
-
 const Badges = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedBadge, setSelectedBadge] = useState(null);
+  const fetchBadges = async () => {
+    const res = await fetch(`${process.env.VITE_API_URL}/badges`);
+    return res.json();
+  };
 
   const { data: badges = [], isLoading } = useQuery({
     queryKey: ['badges'],
@@ -26,15 +22,26 @@ const Badges = () => {
   const queryClient = useQueryClient();
   const createBadge = useMutation({
     mutationFn: async (badge) => {
+      console.log('Creating badge:', badge);
       const res = await fetch(`${process.env.VITE_API_URL}/badges`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(badge),
       });
+      console.log('Response:', res);
       return res.json();
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['badges'] }),
+    onSuccess: () => {
+      console.log('Badge created successfully');
+      queryClient.invalidateQueries({ queryKey: ['badges'] });
+    },
+    onError: (error) => {
+      console.error('Error creating badge:', error);
+    },
   });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState(null);
 
   const filteredBadges = badges.filter(badge =>
     badge.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,6 +96,7 @@ const Badges = () => {
             setSelectedBadge(null);
           }}
           onSave={(badgeData) => {
+            console.log('onSave called with:', badgeData);
             createBadge.mutate(badgeData);
             setIsFormOpen(false);
             setSelectedBadge(null);

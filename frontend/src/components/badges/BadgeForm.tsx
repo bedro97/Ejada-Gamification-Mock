@@ -26,6 +26,7 @@ export const BadgeForm = ({ badge, onClose, onSave }: BadgeFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted with data:', formData);
     onSave(formData);
   };
 
